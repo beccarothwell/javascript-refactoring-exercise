@@ -1,7 +1,7 @@
 const transactionResults = [];
 
 function processTransactions(transactions) {
-  if (!validateTransactions(transactions)) {
+  if (transactions === undefined) {
     throw new Error("Undefined collection of transactions");
   }
 
@@ -44,14 +44,6 @@ function sortByAmountThenName(transactionCount) {
   }
 
   return sortedResults;
-}
-
-function validateTransactions(transactions) {
-  if (transactions === undefined) {
-    return false;
-  }
-
-  return true;
 }
 
 module.exports = processTransactions;
