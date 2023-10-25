@@ -1,8 +1,6 @@
-var transactionResults = [];
+const transactionResults = [];
 
 function processTransactions(transactions) {
-  transactionResults = [];
-
   if (!validateTransactions(transactions)) {
     throw new Error("Undefined collection of transactions");
   }
