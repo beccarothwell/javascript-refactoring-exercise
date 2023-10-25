@@ -5,7 +5,7 @@ function processTransactions(transactions) {
     throw new Error("Undefined collection of transactions");
   }
 
-  let transactionCount = {};
+  /*let transactionCount = {};
 
   const numberOfTransactions = transactions.length;
 
@@ -14,7 +14,17 @@ function processTransactions(transactions) {
     transactionCount[transaction]
       ? (transactionCount[transaction] += 1)
       : (transactionCount[transaction] = 1);
-  }
+  }*/
+
+  let transactionCount = transactions.reduce(
+    (transactionsCount, transaction) => {
+      return {
+        ...transactionsCount,
+        [transaction]: (transactionsCount[transaction] || 0) + 1,
+      };
+    },
+    {}
+  );
 
   transactionCount = sortByAmountThenName(transactionCount);
 
