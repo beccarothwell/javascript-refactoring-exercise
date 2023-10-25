@@ -1,52 +1,59 @@
-var txr = [];
+var transactionResults = [];
 
-function processTransactions(transActions) {
+function processTransactions(transactions) {
+  transactionResults = [];
 
-    txr = [];
+  if (!validateTransactions(transactions)) {
+    throw new Error("Undefined collection of transactions");
+  }
 
-    if(!validateTransactions(transActions)) {
-        throw new Error("Undefined collection of transactions")
-    }
+  let transactionCount = {};
 
-    let txCount = {}
+  const numberOfTransactions = transactions.length;
 
-    const numberOfTransactions = transActions.length;
+  for (var i = 0; i < numberOfTransactions; i++) {
+    const transaction = transactions[i];
+    transactionCount[transaction]
+      ? (transactionCount[transaction] += 1)
+      : (transactionCount[transaction] = 1);
+  }
 
-    for(var i = 0; i < numberOfTransactions; i++) {
-        const transaction = transActions[i];
-        txCount[transaction] ? txCount[transaction] += 1 : txCount[transaction] = 1;
-    }
+  transactionCount = sortByAmountThenName(transactionCount);
 
-    txCount = sortByAmountThenName(txCount);
-    
-    // Place them back in array for returning
-    Object.keys(txCount).forEach(function (key, index) {
-        txr[index] = `${key} ${txCount[key]}`;
-    });
+  // Place them back in array for returning
+  Object.keys(transactionCount).forEach(function (key, index) {
+    transactionResults[index] = `${key} ${transactionCount[key]}`;
+  });
 
-    return txr;
+  return transactionResults;
 }
 
-function sortByAmountThenName(txCount) {
-    let sortedKeys = Object.keys(txCount).sort(function sortingFunction(itemOne, itemTwo) {
-        return  txCount[itemTwo] - txCount[itemOne] || itemOne > itemTwo || -(itemOne < itemTwo)}
+function sortByAmountThenName(transactionCount) {
+  let sortedKeys = Object.keys(transactionCount).sort(function sortingFunction(
+    itemOne,
+    itemTwo
+  ) {
+    return (
+      transactionCount[itemTwo] - transactionCount[itemOne] ||
+      itemOne > itemTwo ||
+      -(itemOne < itemTwo)
     );
+  });
 
-    let sortedResults = {};
-    for(let objectKey of sortedKeys) {
-        sortedResults[objectKey] = txCount[objectKey];
-    }
+  let sortedResults = {};
+  for (let objectKey of sortedKeys) {
+    sortedResults[objectKey] = transactionCount[objectKey];
+  }
 
-    return sortedResults;
+  return sortedResults;
 }
-
 
 function validateTransactions(transactions) {
-    if(transactions === undefined) {
-        return false;
-    } 
+  if (transactions === undefined) {
+    return false;
+  }
 
-    return true;
+  return true;
 }
 
 module.exports = processTransactions;
